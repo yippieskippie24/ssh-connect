@@ -1,0 +1,39 @@
+{
+  "name": "ssh-connect",
+  "version": "1.0.0",
+  "description": "A beautiful TUI SSH connection manager - the modern successor to ssh_connect.sh",
+  "type": "module",
+  "bin": {
+    "ssh-connect": "./bin/ssh-connect.js"
+  },
+  "scripts": {
+    "build": "esbuild src/cli.js --bundle --platform=node --format=esm --jsx=automatic --loader:.js=jsx --outfile=dist/cli.js --packages=external",
+    "prepare": "npm run build",
+    "dev": "node bin/ssh-connect.js"
+  },
+  "keywords": [
+    "ssh",
+    "tui",
+    "terminal",
+    "cli",
+    "ink",
+    "server",
+    "connection-manager"
+  ],
+  "author": "Tyler M Johnson <https://github.com/yippieskippie24>",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "figures": "^6.1.0",
+    "ink": "^5.1.0",
+    "ink-text-input": "^6.0.0",
+    "react": "^18.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
