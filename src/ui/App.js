@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from 'ink';
+import { Box, useStdout } from 'ink';
 import { MainMenu } from './MainMenu.js';
 import { ServerForm } from './ServerForm.js';
 import { ServerDetail } from './ServerDetail.js';
@@ -16,6 +16,10 @@ import { LogViewer } from './LogViewer.js';
  *                   The caller should unmount Ink and spawn SSH.
  */
 export function App({ initialScreen = 'main', initialData = null, onConnect }) {
+  const { stdout } = useStdout();
+  const rows = stdout?.rows ?? process.stdout.rows ?? 24;
+  const cols = stdout?.columns ?? process.stdout.columns ?? 80;
+
   const [screen, setScreen] = useState(initialScreen);
   const [screenData, setScreenData] = useState(initialData);
 
@@ -29,24 +33,33 @@ export function App({ initialScreen = 'main', initialData = null, onConnect }) {
     setScreenData(data);
   };
 
+  let content;
   switch (screen) {
     case 'add':
-      return <ServerForm onNavigate={navigate} mode="add" />;
-
+      content = <ServerForm onNavigate={navigate} mode="add" />;
+      break;
     case 'edit':
-      return <ServerForm onNavigate={navigate} mode="edit" server={screenData?.server} />;
-
+      content = <ServerForm onNavigate={navigate} mode="edit" server={screenData?.server} />;
+      break;
     case 'detail':
-      return <ServerDetail onNavigate={navigate} server={screenData?.server} />;
-
+      content = <ServerDetail onNavigate={navigate} server={screenData?.server} />;
+      break;
     case 'keys':
-      return <KeyManager onNavigate={navigate} />;
-
+      content = <KeyManager onNavigate={navigate} />;
+      break;
     case 'logs':
-      return <LogViewer onNavigate={navigate} />;
-
+      content = <LogViewer onNavigate={navigate} />;
+      break;
     case 'main':
     default:
-      return <MainMenu onNavigate={navigate} />;
+      content = <MainMenu onNavigate={navigate} />;
   }
+
+  // Root box fills the entire terminal window — screens use flexGrow={1}
+  // so their status bars are pinned to the bottom edge.
+  return (
+    <Box flexDirection="column" height={rows} width={cols}>
+      {content}
+    </Box>
+  );
 }

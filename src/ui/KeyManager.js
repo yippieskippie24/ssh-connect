@@ -122,30 +122,32 @@ export function KeyManager({ onNavigate }) {
   // --- GENERATE screen ---
   if (screen === SCREEN.GENERATE) {
     return (
-      <Box flexDirection="column" padding={1}>
+      <Box flexDirection="column" flexGrow={1} paddingX={1}>
         <Banner />
         <Text color="cyan" bold>Generate New SSH Key</Text>
         <Box marginBottom={1} />
 
-        <TextInput
-          label="Key Name"
-          value={genName}
-          onChange={setGenName}
-          onSubmit={() => setGenField(1)}
-          focus={genField === 0}
-          placeholder="id_ed25519_work"
-        />
-        <TextInput
-          label="Key Type"
-          value={genType}
-          onChange={setGenType}
-          onSubmit={handleGenerate}
-          focus={genField === 1}
-          placeholder="ed25519"
-        />
+        <Box flexDirection="column" flexGrow={1}>
+          <TextInput
+            label="Key Name"
+            value={genName}
+            onChange={setGenName}
+            onSubmit={() => setGenField(1)}
+            focus={genField === 0}
+            placeholder="id_ed25519_work"
+          />
+          <TextInput
+            label="Key Type"
+            value={genType}
+            onChange={setGenType}
+            onSubmit={handleGenerate}
+            focus={genField === 1}
+            placeholder="ed25519"
+          />
 
-        {generating ? <Text color="yellow">Generating key...</Text> : null}
-        {error ? <Text color="red">✖ {error}</Text> : null}
+          {generating ? <Text color="yellow">Generating key...</Text> : null}
+          {error ? <Text color="red">✖ {error}</Text> : null}
+        </Box>
 
         <StatusBar bindings={[
           { key: 'Enter/Tab', label: 'Next Field' },
@@ -159,7 +161,7 @@ export function KeyManager({ onNavigate }) {
   // --- COPY screen ---
   if (screen === SCREEN.COPY) {
     return (
-      <Box flexDirection="column" padding={1}>
+      <Box flexDirection="column" flexGrow={1} paddingX={1}>
         <Banner />
         <Text color="cyan" bold>Copy Key to Server</Text>
         <Box>
@@ -168,22 +170,24 @@ export function KeyManager({ onNavigate }) {
         </Box>
         <Box marginBottom={1} />
 
-        <Divider title="SELECT SERVER" width={50} />
-        <Box marginTop={1} />
+        <Box flexDirection="column" flexGrow={1}>
+          <Divider title="SELECT SERVER" width={50} />
+          <Box marginTop={1} />
 
-        {servers.map((server, i) => (
-          <Box key={server.alias} paddingX={1}>
-            <Text color={i === selectedServerIndex ? 'cyan' : 'gray'}>
-              {i === selectedServerIndex ? '▶ ' : '  '}
-            </Text>
-            <Text color={i === selectedServerIndex ? 'white' : 'gray'}>
-              {server.alias.padEnd(20)}
-            </Text>
-            <Text color="gray">{server.host}</Text>
-          </Box>
-        ))}
+          {servers.map((server, i) => (
+            <Box key={server.alias} paddingX={1}>
+              <Text color={i === selectedServerIndex ? 'cyan' : 'gray'}>
+                {i === selectedServerIndex ? '▶ ' : '  '}
+              </Text>
+              <Text color={i === selectedServerIndex ? 'white' : 'gray'}>
+                {server.alias.padEnd(20)}
+              </Text>
+              <Text color="gray">{server.host}</Text>
+            </Box>
+          ))}
 
-        {error ? <Text color="red">✖ {error}</Text> : null}
+          {error ? <Text color="red">✖ {error}</Text> : null}
+        </Box>
 
         <StatusBar bindings={[
           { key: '↑↓', label: 'Select Server' },
@@ -196,11 +200,12 @@ export function KeyManager({ onNavigate }) {
 
   // --- LIST screen ---
   return (
-    <Box flexDirection="column" padding={1}>
+    <Box flexDirection="column" flexGrow={1} paddingX={1}>
       <Banner />
       <Text color="cyan" bold>SSH Key Manager</Text>
       <Box marginBottom={1} />
 
+      <Box flexDirection="column" flexGrow={1}>
       {keys.length === 0 ? (
         <Box paddingX={1}>
           <Text color="gray">No SSH keys found in ~/.ssh/</Text>
@@ -235,6 +240,7 @@ export function KeyManager({ onNavigate }) {
           <Text color="red">✖ {error}</Text>
         </Box>
       ) : null}
+      </Box>
 
       <StatusBar bindings={[
         { key: '↑↓', label: 'Navigate' },

@@ -60,63 +60,66 @@ export function MainMenu({ onNavigate }) {
 
   if (!config) {
     return (
-      <Box padding={1}>
+      <Box flexGrow={1} paddingX={1}>
         <Text color="gray">Loading...</Text>
       </Box>
     );
   }
 
   return (
-    <Box flexDirection="column" padding={1}>
+    <Box flexDirection="column" flexGrow={1} paddingX={1}>
       <Banner />
 
-      {servers.length === 0 ? (
-        <Box flexDirection="column" marginBottom={1} paddingX={1}>
-          <Text color="gray">No servers configured yet.</Text>
-          <Box>
-            <Text color="gray">Press </Text>
-            <Text color="cyan" bold>A</Text>
-            <Text color="gray"> to add your first server, or </Text>
-            <Text color="cyan" bold>Q</Text>
-            <Text color="gray"> to quit.</Text>
+      {/* Content area grows to fill available space, pushing StatusBar to bottom */}
+      <Box flexDirection="column" flexGrow={1}>
+        {servers.length === 0 ? (
+          <Box flexDirection="column" marginBottom={1}>
+            <Text color="gray">No servers configured yet.</Text>
+            <Box>
+              <Text color="gray">Press </Text>
+              <Text color="cyan" bold>A</Text>
+              <Text color="gray"> to add your first server, or </Text>
+              <Text color="cyan" bold>Q</Text>
+              <Text color="gray"> to quit.</Text>
+            </Box>
           </Box>
-        </Box>
-      ) : (
-        <Box flexDirection="column" marginBottom={1}>
-          <Divider title="SERVERS" width={58} />
-          <Box marginTop={1} />
-          {servers.map((server, i) => {
-            const isSelected = i === selectedIndex;
-            return (
-              <Box key={server.alias} paddingX={1} marginBottom={0}>
-                <Text color={isSelected ? 'cyan' : 'gray'}>
-                  {isSelected ? '▶ ' : '  '}
-                </Text>
-                <Badge status={health[server.alias] || 'unknown'} />
-                <Text> </Text>
-                <Text color={isSelected ? 'white' : 'gray'} bold={isSelected}>
-                  {server.alias.padEnd(22)}
-                </Text>
-                <Text color={isSelected ? 'gray' : 'gray'}>
-                  {server.host.padEnd(20)}
-                </Text>
-                {server.description ? (
-                  <Text color="gray" dimColor>{server.description}</Text>
-                ) : null}
-              </Box>
-            );
-          })}
-        </Box>
-      )}
+        ) : (
+          <Box flexDirection="column" marginBottom={1}>
+            <Divider title="SERVERS" width={58} />
+            <Box marginTop={1} />
+            {servers.map((server, i) => {
+              const isSelected = i === selectedIndex;
+              return (
+                <Box key={server.alias} paddingX={1} marginBottom={0}>
+                  <Text color={isSelected ? 'cyan' : 'gray'}>
+                    {isSelected ? '▶ ' : '  '}
+                  </Text>
+                  <Badge status={health[server.alias] || 'unknown'} />
+                  <Text> </Text>
+                  <Text color={isSelected ? 'white' : 'gray'} bold={isSelected}>
+                    {server.alias.padEnd(22)}
+                  </Text>
+                  <Text color={isSelected ? 'gray' : 'gray'}>
+                    {server.host.padEnd(20)}
+                  </Text>
+                  {server.description ? (
+                    <Text color="gray" dimColor>{server.description}</Text>
+                  ) : null}
+                </Box>
+              );
+            })}
+          </Box>
+        )}
 
-      {/* Add Server row */}
-      <Box paddingX={1} marginBottom={1}>
-        <Text color={selectedIndex === servers.length ? 'cyan' : 'gray'}>
-          {selectedIndex === servers.length ? '▶ ' : '  '}
-        </Text>
-        <Text color={selectedIndex === servers.length ? 'cyan' : 'gray'}>
-          + Add Server
-        </Text>
+        {/* Add Server row */}
+        <Box paddingX={1} marginBottom={1}>
+          <Text color={selectedIndex === servers.length ? 'cyan' : 'gray'}>
+            {selectedIndex === servers.length ? '▶ ' : '  '}
+          </Text>
+          <Text color={selectedIndex === servers.length ? 'cyan' : 'gray'}>
+            + Add Server
+          </Text>
+        </Box>
       </Box>
 
       <StatusBar bindings={[

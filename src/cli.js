@@ -254,10 +254,17 @@ async function runTUI(initialScreen = 'main', initialData = null) {
 
 /**
  * Render the Ink TUI and wait for it to exit.
+ * Uses the alternate screen buffer (like vim/less) so the original terminal
+ * is fully restored when the TUI exits.
  * Returns the server the user wants to connect to, or null if they quit.
  */
 function launchTUI(screen = 'main', data = null) {
   return new Promise((resolve) => {
+    // Enter alternate screen buffer and jump cursor to top-left
+    process.stdout.write('\x1b[?1049h\x1b[H');
+
+    const exitAltScreen = () => process.stdout.write('\x1b[?1049l');
+
     let pendingServer = null;
 
     const { unmount, waitUntilExit } = render(
@@ -272,6 +279,7 @@ function launchTUI(screen = 'main', data = null) {
     );
 
     waitUntilExit().then(() => {
+      exitAltScreen();
       resolve(pendingServer);
     });
   });

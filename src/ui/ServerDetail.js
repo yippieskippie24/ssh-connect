@@ -52,9 +52,10 @@ export function ServerDetail({ server, onNavigate }) {
   ];
 
   return (
-    <Box flexDirection="column" padding={1}>
+    <Box flexDirection="column" flexGrow={1} paddingX={1}>
       <Banner />
 
+      <Box flexDirection="column" flexGrow={1}>
       <Box borderStyle="round" borderColor="cyan" padding={1} marginBottom={1} flexDirection="column">
         <Box marginBottom={1}>
           <Text color="cyan" bold>{server.alias}</Text>
@@ -88,6 +89,7 @@ export function ServerDetail({ server, onNavigate }) {
           <Text color="gray">o)</Text>
         </Box>
       ) : null}
+      </Box>
 
       <StatusBar bindings={[
         { key: 'C', label: 'Connect' },

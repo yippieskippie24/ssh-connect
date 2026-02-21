@@ -104,28 +104,30 @@ export function ServerForm({ mode = 'add', server = null, onNavigate }) {
   const title = mode === 'add' ? 'Add Server' : `Edit: ${server?.alias}`;
 
   return (
-    <Box flexDirection="column" padding={1}>
+    <Box flexDirection="column" flexGrow={1} paddingX={1}>
       <Banner />
       <Text color="cyan" bold>{title}</Text>
       <Box marginBottom={1} />
 
-      {FIELDS.map((field, i) => (
-        <TextInput
-          key={field.name}
-          label={field.label}
-          value={values[field.name]}
-          onChange={v => handleChange(field.name, v)}
-          onSubmit={() => handleFieldSubmit(i)}
-          focus={focusedField === i}
-          placeholder={field.placeholder}
-        />
-      ))}
+      <Box flexDirection="column" flexGrow={1}>
+        {FIELDS.map((field, i) => (
+          <TextInput
+            key={field.name}
+            label={field.label}
+            value={values[field.name]}
+            onChange={v => handleChange(field.name, v)}
+            onSubmit={() => handleFieldSubmit(i)}
+            focus={focusedField === i}
+            placeholder={field.placeholder}
+          />
+        ))}
 
-      {error ? (
-        <Box marginTop={1}>
-          <Text color="red">✖ {error}</Text>
-        </Box>
-      ) : null}
+        {error ? (
+          <Box marginTop={1}>
+            <Text color="red">✖ {error}</Text>
+          </Box>
+        ) : null}
+      </Box>
 
       <StatusBar bindings={[
         { key: 'Enter/Tab', label: 'Next Field' },

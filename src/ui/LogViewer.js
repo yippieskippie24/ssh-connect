@@ -47,7 +47,7 @@ export function LogViewer({ onNavigate }) {
   };
 
   return (
-    <Box flexDirection="column" padding={1}>
+    <Box flexDirection="column" flexGrow={1} paddingX={1}>
       <Banner />
       <Text color="cyan" bold>Connection History</Text>
       <Box>
@@ -55,42 +55,44 @@ export function LogViewer({ onNavigate }) {
       </Box>
       <Box marginBottom={1} />
 
-      {logs.length === 0 ? (
-        <Box paddingX={1}>
-          <Text color="gray">No connection history yet. Connect to a server to start logging.</Text>
-        </Box>
-      ) : (
-        <Box flexDirection="column">
+      <Box flexDirection="column" flexGrow={1}>
+        {logs.length === 0 ? (
           <Box paddingX={1}>
-            <Text color="gray" bold>{'TIMESTAMP'.padEnd(20)}</Text>
-            <Text color="gray" bold>{'ALIAS'.padEnd(20)}</Text>
-            <Text color="gray" bold>{'HOST'.padEnd(20)}</Text>
-            <Text color="gray" bold>{'STATUS'.padEnd(10)}</Text>
-            <Text color="gray" bold>{'DUR'}</Text>
+            <Text color="gray">No connection history yet. Connect to a server to start logging.</Text>
           </Box>
-          <Divider width={76} />
-
-          {visibleLogs.map((log, i) => (
-            <Box key={i} paddingX={1}>
-              <Text color="gray">{formatDate(log.timestamp).padEnd(20)}</Text>
-              <Text color="white">{(log.alias || '—').padEnd(20)}</Text>
-              <Text color="gray">{(log.host || '—').padEnd(20)}</Text>
-              <Text color={log.success ? 'green' : 'red'}>
-                {(log.success ? '✔ ok' : '✖ fail').padEnd(10)}
-              </Text>
-              <Text color="gray">{log.duration || 0}s</Text>
+        ) : (
+          <Box flexDirection="column">
+            <Box paddingX={1}>
+              <Text color="gray" bold>{'TIMESTAMP'.padEnd(20)}</Text>
+              <Text color="gray" bold>{'ALIAS'.padEnd(20)}</Text>
+              <Text color="gray" bold>{'HOST'.padEnd(20)}</Text>
+              <Text color="gray" bold>{'STATUS'.padEnd(10)}</Text>
+              <Text color="gray" bold>{'DUR'}</Text>
             </Box>
-          ))}
-        </Box>
-      )}
+            <Divider width={76} />
 
-      {logs.length > PAGE_SIZE ? (
-        <Box marginTop={1} paddingX={1}>
-          <Text color="gray">
-            Showing {offset + 1}–{Math.min(offset + PAGE_SIZE, logs.length)} of {logs.length}
-          </Text>
-        </Box>
-      ) : null}
+            {visibleLogs.map((log, i) => (
+              <Box key={i} paddingX={1}>
+                <Text color="gray">{formatDate(log.timestamp).padEnd(20)}</Text>
+                <Text color="white">{(log.alias || '—').padEnd(20)}</Text>
+                <Text color="gray">{(log.host || '—').padEnd(20)}</Text>
+                <Text color={log.success ? 'green' : 'red'}>
+                  {(log.success ? '✔ ok' : '✖ fail').padEnd(10)}
+                </Text>
+                <Text color="gray">{log.duration || 0}s</Text>
+              </Box>
+            ))}
+          </Box>
+        )}
+
+        {logs.length > PAGE_SIZE ? (
+          <Box marginTop={1} paddingX={1}>
+            <Text color="gray">
+              Showing {offset + 1}–{Math.min(offset + PAGE_SIZE, logs.length)} of {logs.length}
+            </Text>
+          </Box>
+        ) : null}
+      </Box>
 
       <StatusBar bindings={[
         { key: '↑↓', label: 'Scroll' },
